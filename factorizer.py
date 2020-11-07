@@ -48,12 +48,12 @@ def factor(p, coefficients):
             if coef2[0] == 0:
                 continue
             
-            product = multiply(coef1, coef2, p)
+            product_ = multiply(coef1, coef2, p)
             # print(coef1, coef2, product, coefficients)
 
-            assert len(coefficients) == len(product)
+            assert len(coefficients) == len(product_)
             
-            if coefficients == product:
+            if coefficients == product_:
                 possible.append((coef1, coef2))
             
             # seen[coef2] = 1
@@ -114,5 +114,25 @@ def mod(coefficients, n):
 def is_monic(coefficients):
     return coefficients[0] == 1
 
+def get_matricies():
+    n = int(sys.argv[1])
+    for row1 in product(*[range(n)]*3):
+        for row2 in product(*[range(n)]*3):
+            for row3 in product(*[range(n)]*3):
+                matrix = [row1, row2, row3]
+                # print(matrix)
+                det = det3x3(matrix)
+                if det in [2,5]:
+                    print(det, pformat(matrix))
+
+def det3x3(m): # m is a matrix
+    return m[0][0] * det2x2(m[1][1], m[1][2], m[2][1], m[2][2]) \
+         - m[0][1] * det2x2(m[1][0], m[1][2], m[2][0], m[2][2]) \
+         + m[0][2] * det2x2(m[1][0], m[1][1], m[2][0], m[2][1])
+
+def det2x2(a,b,c,d):
+    return a*d-b*c
+
 if __name__ == "__main__":
-    main()
+    # main()
+    get_matricies()
